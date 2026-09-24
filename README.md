@@ -53,40 +53,46 @@ Watch the complete video breakdown on the [**Nubenetes YouTube Channel**](https:
 ## 🧠 Core Architecture & Decision Framework
 
 ```mermaid
+%%{init: {'theme': 'neutral', 'themeVariables': { 'fontSize': '12px' }}}%%
 flowchart TD
-    %% Node Definitions with Multi-line Formatting for Readability
-    A["🔍 Cluster Workload Review<br/>(Metrics & Inventory)"]
-    B{"Determine<br/>Resource Dimension"}
+    %% Node Styles
+    classDef default fill:#f8fafc,stroke:#334155,stroke-width:1.5px,font-size:12px;
+    classDef highlight fill:#eff6ff,stroke:#2563eb,stroke-width:2px,font-size:12px;
+    classDef decision fill:#fffbeb,stroke:#d97706,stroke-width:1.5px,font-size:11px;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,font-size:12px;
+
+    A["🔍 <b>Cluster Workload Review</b><br/>Inspect Pod Metrics & Inventory"]:::highlight
+    B{"Determine<br/>Dimension"}:::decision
     
     A --> B
     
-    %% CPU Optimization Branch
-    B -->|"⚡ CPU Tuning"| C["Set Accurate CPU Requests<br/>(Empirical P95 Base Load)"]
-    C --> D{"Latency<br/>Sensitive?"}
-    D -->|"Yes (Web / APIs)"| E["Omit CPU Limits<br/>(Prevent Linux CFS<br/>Quota Throttling)"]
-    D -->|"No (Batch / Queues)"| F["Set High Burst Limit<br/>(Protect Host From<br/>Runaway Loops)"]
+    %% CPU Path
+    B -->|"⚡ CPU Tuning"| C["<b>Set Accurate CPU Requests</b><br/>Empirical P95 Base Load"]
+    C --> D{"Latency<br/>Sensitive?"}:::decision
+    D -->|"Yes (Web/API)"| E["<b>Omit CPU Limits</b><br/>Eliminate Linux CFS<br/>Quota Throttling"]
+    D -->|"No (Batch/Job)"| F["<b>Set Generous Limit</b><br/>Protect Node from<br/>Runaway Loops"]
 
-    %% Memory Optimization Branch
-    B -->|"💾 Memory Tuning"| G["Analyze Language Runtime<br/>Memory Anatomy & Allocators"]
-    G --> H["☕ Java (JVM)<br/>• Heap &le; 75% Limit<br/>• Reserve 25% Off-Heap<br/>• -XX:MaxRAMPercentage=75"]
-    G --> I["🟢 Node.js (V8)<br/>• Old Space &le; 75% Limit<br/>• Reserve C++ Buffer Slabs<br/>• Protect Event Loop"]
-    G --> J["🔷 Go (Golang)<br/>• GOMEMLIMIT = 90% Limit<br/>• Set automaxprocs<br/>• Soft GC Target"]
-    G --> K["🐍 Python (WSGI/ASGI)<br/>• Workers = 2 &times; Cores + 1<br/>• Max Requests Recycling<br/>• Copy-On-Write Guard"]
+    %% Memory Path
+    B -->|"💾 Memory Tuning"| G["<b>Analyze Runtime Memory</b><br/>Anatomy & OS Allocators"]
+    G --> H["☕ <b>Java (JVM)</b><br/>• Heap &le; 75% Limit<br/>• 25% Off-Heap Margin<br/>• MaxRAMPercentage=75"]
+    G --> I["🟢 <b>Node.js (V8)</b><br/>• Old Space &le; 75% Limit<br/>• Headroom for C++ Buffers<br/>• Protect Event Loop"]
+    G --> J["🔷 <b>Go (Golang)</b><br/>• GOMEMLIMIT = 90% Limit<br/>• Set automaxprocs<br/>• Soft GC Target"]
+    G --> K["🐍 <b>Python (WSGI)</b><br/>• Workers = 2 &times; Cores + 1<br/>• Worker Recycling<br/>• Guard Copy-On-Write"]
 
-    %% Telemetry Convergence
-    E --> L["📊 Prometheus Telemetry<br/>&amp; Continuous Alerting"]
+    %% Convergence
+    E --> L["📊 <b>Prometheus Telemetry</b><br/>Continuous Metric Scrapes<br/>&amp; Threshold Alerts"]:::highlight
     F --> L
     H --> L
     I --> L
     J --> L
     K --> L
 
-    %% Evaluation & GitOps
-    L --> M{"Evaluate via<br/>VPA / KRR Engine"}
-    M --> N["Apply Selection Policy<br/>• Delta &gt; $50/mo or &gt; 35%<br/>• Filter Noise & Churn"]
-    N --> O["Verify Git Revision<br/>Freshness (Stale-Check)"]
-    O --> P["Submit Declarative<br/>GitOps Pull Request"]
-    P --> Q["🚀 Canary Verification<br/>&amp; Cloud Node Compaction<br/>(Realize $ Savings)"]
+    %% Decision & Action
+    L --> M{"Evaluate via<br/>VPA / KRR"}:::decision
+    M --> N["<b>Apply Selection Policy</b><br/>Delta &gt; $50/mo or &gt; 35%<br/>Filter Noise & Churn"]
+    N --> O["<b>Verify Git Freshness</b><br/>Confirm No Stale Commits<br/>Since Metrics Began"]
+    O --> P["<b>Submit GitOps PR</b><br/>Declarative Changes<br/>Linked to Evidence"]
+    P --> Q["🚀 <b>Canary Verification</b><br/>Cloud Node Compaction<br/>(Realize $ Savings)"]:::success
 ```
 
 ---
