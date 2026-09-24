@@ -4,6 +4,12 @@
 
 ---
 
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Chapter 5: Fleet-Scale Policy & GitOps](05-fleet-scale-policy-gitops.md) | [📚 Table of Contents](../README.md#table-of-contents) | [Runtime Guide: Java & JVM ➡️](runtimes/java-jvm.md) |
+
+---
+
 ## 1. Can AI Optimize Kubernetes for You?
 
 The short answer is **yes, but not by letting an LLM blindly guess numbers or directly patch live production clusters.**
@@ -78,3 +84,9 @@ Every automated rollout must be tethered to deterministic monitoring signals:
 * **Error Rate Spike:** HTTP $5\text{xx} > 0.1\%$ over baseline.
 * **Latency Increase:** P99 latency degrades by $> 20\%$.
 * **Restart Activity:** Any container restart within 30 minutes of deployment triggers an immediate automated Git revert.
+
+---
+
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Chapter 5: Fleet-Scale Policy & GitOps](05-fleet-scale-policy-gitops.md) | [📚 Table of Contents](../README.md#table-of-contents) | [Runtime Guide: Java & JVM ➡️](runtimes/java-jvm.md) |

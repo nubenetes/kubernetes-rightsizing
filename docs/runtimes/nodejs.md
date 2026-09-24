@@ -4,6 +4,12 @@
 
 ---
 
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Runtime Guide: Java & JVM](java-jvm.md) | [📚 Table of Contents](../../README.md#table-of-contents) | [Runtime Guide: Go (Golang) ➡️](golang.md) |
+
+---
+
 ## 1. Node.js & V8 Memory Boundaries
 
 Node.js executes on the Google V8 engine. By default, V8 configures its maximum heap based on available host memory, which inside a container often leads to over-allocation and sudden `OOMKilled` termination.
@@ -67,3 +73,9 @@ During this throttle period:
 * Inbound TCP socket connections queue up.
 * Event loop lag climbs from `< 5ms` to `> 90ms`.
 * Readiness probe checks fail with HTTP 504.
+
+---
+
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Runtime Guide: Java & JVM](java-jvm.md) | [📚 Table of Contents](../../README.md#table-of-contents) | [Runtime Guide: Go (Golang) ➡️](golang.md) |

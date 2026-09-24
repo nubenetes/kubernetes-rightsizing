@@ -4,6 +4,12 @@
 
 ---
 
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Runtime Guide: Go (Golang)](golang.md) | [📚 Table of Contents](../../README.md#table-of-contents) | [Chapter 1: Requests & Limits 🔄](../01-requests-limits-kernel-mechanics.md) |
+
+---
+
 ## 1. Multi-Process Architecture & The Worker Sizing Trap
 
 Because standard CPython employs a Global Interpreter Lock (GIL), production web servers (such as Gunicorn or Uvicorn) spawn **multiple worker processes** to utilize CPU capacity.
@@ -53,3 +59,9 @@ graph TD
    ```
 3. **Use Memory Profilers (tracemalloc / pympler) to Track Native vs Heap Memory:**
    Native C extensions (e.g. `numpy`, `pandas`, `cryptography`) allocate directly via `malloc()` and bypass Python's memory pool.
+
+---
+
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Runtime Guide: Go (Golang)](golang.md) | [📚 Table of Contents](../../README.md#table-of-contents) | [Chapter 1: Requests & Limits 🔄](../01-requests-limits-kernel-mechanics.md) |

@@ -4,6 +4,12 @@
 
 ---
 
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Chapter 6: AI-Assisted Rightsizing](../06-ai-assisted-rightsizing.md) | [📚 Table of Contents](../../README.md#table-of-contents) | [Runtime Guide: Node.js ➡️](nodejs.md) |
+
+---
+
 ## 1. Why Java Containers Crash (The Memory Anatomy)
 
 Setting container memory limits equal to the JVM maximum heap (`-Xmx`) is the single most common cause of `OOMKilled` containers in Kubernetes.
@@ -65,3 +71,9 @@ By default, the JVM determines its internal thread pool sizing (common `ForkJoin
 -XX:ActiveProcessorCount=2
 ```
 Manually align JVM concurrency to match your expected workload throughput rather than node or fractional limit defaults.
+
+---
+
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Chapter 6: AI-Assisted Rightsizing](../06-ai-assisted-rightsizing.md) | [📚 Table of Contents](../../README.md#table-of-contents) | [Runtime Guide: Node.js ➡️](nodejs.md) |

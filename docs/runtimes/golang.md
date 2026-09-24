@@ -4,6 +4,12 @@
 
 ---
 
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Runtime Guide: Node.js](nodejs.md) | [📚 Table of Contents](../../README.md#table-of-contents) | [Runtime Guide: Python ➡️](python.md) |
+
+---
+
 ## 1. Go Runtime Memory Architecture
 
 Prior to Go 1.19, the Go garbage collector operated purely on a relative ratio (`GOGC=100`, which triggers GC whenever heap size doubles). In container environments with fixed limits, this caused sudden OOMKills under heavy load spikes.
@@ -65,3 +71,9 @@ func main() {
 }
 ```
 `automaxprocs` automatically inspects the container's cgroup CPU quota and dynamically adjusts `runtime.GOMAXPROCS()` to match your Kubernetes allocation.
+
+---
+
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Runtime Guide: Node.js](nodejs.md) | [📚 Table of Contents](../../README.md#table-of-contents) | [Runtime Guide: Python ➡️](python.md) |

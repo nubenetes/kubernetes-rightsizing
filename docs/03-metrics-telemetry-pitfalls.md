@@ -4,6 +4,12 @@
 
 ---
 
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Chapter 2: Container vs. App Memory](02-container-vs-application-memory.md) | [📚 Table of Contents](../README.md#table-of-contents) | [Chapter 4: Recommendation Models (VPA & KRR) ➡️](04-recommendation-models-vpa-krr.md) |
+
+---
+
 ## 1. The Multi-Layer Observability Stack
 
 Accurate rightsizing requires collecting and cross-referencing telemetry from three distinct layers:
@@ -104,3 +110,9 @@ sum by (namespace, pod, container) (
   increase(kube_pod_container_status_terminated_reason{reason="OOMKilled"}[15m])
 ) > 0
 ```
+
+---
+
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Chapter 2: Container vs. App Memory](02-container-vs-application-memory.md) | [📚 Table of Contents](../README.md#table-of-contents) | [Chapter 4: Recommendation Models (VPA & KRR) ➡️](04-recommendation-models-vpa-krr.md) |

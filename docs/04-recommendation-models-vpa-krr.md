@@ -4,6 +4,12 @@
 
 ---
 
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Chapter 3: Telemetry & Metrics Pitfalls](03-metrics-telemetry-pitfalls.md) | [📚 Table of Contents](../README.md#table-of-contents) | [Chapter 5: Fleet-Scale Policy & GitOps ➡️](05-fleet-scale-policy-gitops.md) |
+
+---
+
 ## 1. Comparing Recommendation Engines: KRR vs. VPA
 
 Two major open-source tools dominate Kubernetes recommendation workflows: **Robusta KRR (Kubernetes Resource Recommender)** and the official **Kubernetes Vertical Pod Autoscaler (VPA)**.
@@ -140,3 +146,9 @@ Neither KRR nor VPA can infer application-level context:
           memory: 4Gi
   ```
 * **Filter out ephemeral jobs:** Exclude batch jobs, CI/CD runners, and short-lived pods from fleet-wide analysis.
+
+---
+
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Chapter 3: Telemetry & Metrics Pitfalls](03-metrics-telemetry-pitfalls.md) | [📚 Table of Contents](../README.md#table-of-contents) | [Chapter 5: Fleet-Scale Policy & GitOps ➡️](05-fleet-scale-policy-gitops.md) |

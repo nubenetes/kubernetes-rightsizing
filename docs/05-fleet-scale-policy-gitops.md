@@ -4,6 +4,12 @@
 
 ---
 
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Chapter 4: Recommendation Models (VPA & KRR)](04-recommendation-models-vpa-krr.md) | [📚 Table of Contents](../README.md#table-of-contents) | [Chapter 6: AI-Assisted Rightsizing ➡️](06-ai-assisted-rightsizing.md) |
+
+---
+
 ## 1. Moving from Candidates to Fleet Policy
 
 Generating numbers is trivial; applying them safely across thousands of microservices across hundreds of repositories is where rightsizing initiatives succeed or fail.
@@ -96,3 +102,9 @@ sequenceDiagram
     Argo->>Cluster: Sync updated requests/limits
     Cluster-->>Engine: Telemetry confirms healthy canary operation
 ```
+
+---
+
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Chapter 4: Recommendation Models (VPA & KRR)](04-recommendation-models-vpa-krr.md) | [📚 Table of Contents](../README.md#table-of-contents) | [Chapter 6: AI-Assisted Rightsizing ➡️](06-ai-assisted-rightsizing.md) |

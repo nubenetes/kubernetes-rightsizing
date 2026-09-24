@@ -97,6 +97,33 @@ flowchart TD
 
 ---
 
+<a id="table-of-contents"></a>
+## 📖 Table of Contents & Chapter Guide
+
+This repository provides an in-depth, hands-on architectural curriculum for Kubernetes rightsizing. You can read the guides sequentially or jump directly to any topic below:
+
+### 🏛️ Core Architectural Chapters
+
+| Chapter | Title | Architectural Focus & Key Takeaways |
+| :---: | :--- | :--- |
+| **01** | [**Requests, Limits, and Kernel Mechanics**](docs/01-requests-limits-kernel-mechanics.md) | **Linux CFS Quotas, Shares & OOM Termination:** How Kubernetes requests (`cpu.shares` / `cpu.weight`) and limits (`cpu.cfs_quota_us` / `cpu.max`) map to cgroups v1 & v2. Why setting hard CPU limits causes severe CFS throttling on multi-threaded runtimes on idle nodes, how memory limits invoke the kernel OOM Killer (Signal 9, Exit 137), and how QoS classes (`Guaranteed`, `Burstable`, `BestEffort`) determine pod eviction priority under node pressure. |
+| **02** | [**Container vs. Application Memory**](docs/02-container-vs-application-memory.md) | **Memory Anatomy, Allocators & Cold Starts:** Why container memory (`container_memory_working_set_bytes`) diverges from application runtime memory. Analyzes Resident Set Size (RSS), active vs. inactive page cache reclamation, Linux memory allocators (`glibc` ptmalloc arenas vs. `jemalloc`/`mimalloc` memory fragmentation), and why sizing memory without accounting for cold-start JVM/V8 classloading surges triggers instant rolling update crashloops. |
+| **03** | [**Collecting Container, Runtime, and Kubernetes Metrics**](docs/03-metrics-telemetry-pitfalls.md) | **Telemetry Stack, Prometheus Traps & Scrape Latency:** Constructing a multi-layer telemetry pipeline across cgroups, runtime APMs, and the K8s control plane. Highlights the 30-second Prometheus scrape trap where transient throttling spikes are hidden, mathematical pitfalls of $\text{p95}$ vs. $\text{p99}$ vs. maxima, PromQL rate calculation windows (`rate` vs `irate`), and real-time CFS throttle counter tracking (`container_cpu_cfs_throttled_periods_total`). |
+| **04** | [**From Metrics to a Safe Recommendation (VPA & KRR)**](docs/04-recommendation-models-vpa-krr.md) | **Recommendation Algorithms, Histograms & Sizing Models:** Technical comparison between Robusta KRR (stateless Prometheus PromQL batch queries, `simple` vs `conservative` percentiles) and Kubernetes Vertical Pod Autoscaler (stateful in-cluster Recommender, decaying weighted histograms with 24h half-life, OOMKill bump multiplier, Updater eviction engine, and Mutating Admission Webhook). Plus the autoscaler collision trap between HPA and VPA. |
+| **05** | [**Rightsizing at Scale Is a Policy Problem**](docs/05-fleet-scale-policy-gitops.md) | **Fleet Governance, 4-Step Policy & GitOps:** Managing thousands of microservices through four discrete operational policies: (1) Generation Policy (lookback windows & percentile margins), (2) Selection Policy (noise filtering: e.g. delta > $50/mo or > 35%), (3) Execution Policy (GitOps PR generation to source of truth instead of mutating etcd), and (4) Lifecycle Policy (stale commit guardrails & canary rollback signals). Explains the FinOps reality: why reclaiming requests does not reduce cloud bills until node bin-packing and compaction terminate cloud instances. |
+| **06** | [**AI-Assisted Rightsizing & Autonomous Operations**](docs/06-ai-assisted-rightsizing.md) | **Autonomous LLM Agents & Deterministic Control:** Designing safe, production-grade AI agents for fleet rightsizing. Combines deterministic mathematical calculators for resource sizing with LLM agents for contextual reasoning (detecting upcoming marketing campaigns, understanding JVM classloading, verifying Git commit timestamps against telemetry observation windows). Outlines canary evaluation criteria, automated rollback triggers (5xx errors, restart spikes), and automated GitOps PR workflows. |
+
+### ⚙️ Runtime-Specific Optimization Guides
+
+| Runtime | Guide | Deep-Dive Scope & Tuning Knobs |
+| :---: | :--- | :--- |
+| **Java** | [**Java & the JVM in Kubernetes**](docs/runtimes/java-jvm.md) | **Container-Aware JVM Tuning:** Complete memory anatomy of Java containers (`MaxRAMPercentage`, Young/Old heap vs. off-heap allocations). How to calculate safe container memory limits by accounting for Metaspace, thread stacks ($1\text{MB}$ per thread), direct byte buffers (Netty/NIO), and JIT CodeCache, eliminating the fatal mistake of equating `-Xmx` to container limits. |
+| **Node.js** | [**Node.js in Kubernetes**](docs/runtimes/nodejs.md) | **V8 Engine Boundaries & Event Loop Safety:** Configuring `--max-old-space-size` to 70–75% of container RAM, leaving essential headroom for native C++ buffers and code space. How to monitor event loop latency (`event_loop_lag`), prevent GC-induced single-thread pauses, and avoid abrupt container `OOMKilled` crashes. |
+| **Go** | [**Go (Golang) in Kubernetes**](docs/runtimes/golang.md) | **Soft Memory Ceilings & CFS Core Alignment:** Modern memory tuning with `GOMEMLIMIT` (Go 1.19+ soft memory ceiling set to 90% of limit) to trigger aggressive GC before hitting hard cgroup walls. Enforcing CPU core alignment using `uber-go/automaxprocs` to prevent CFS throttling caused by default host core detection. |
+| **Python** | [**Python (FastAPI, Flask, Django) in Kubernetes**](docs/runtimes/python.md) | **Multi-Process Sizing & Copy-On-Write Decay:** The classic `(2 * Cores) + 1` worker trap in containers on large nodes. Sizing worker processes based on private memory budgets, managing Linux Copy-On-Write (COW) page decay caused by Python refcounting, and configuring `--max-requests` with jitter to defeat progressive memory leaks. |
+
+---
+
 ## 📂 Repository Structure
 
 ```text

@@ -4,6 +4,12 @@
 
 ---
 
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| *First Chapter* | [📚 Table of Contents](../README.md#table-of-contents) | [Chapter 2: Container vs. App Memory ➡️](02-container-vs-application-memory.md) |
+
+---
+
 ## 1. The Disconnect: Intent vs. Kernel Enforcement
 
 In Kubernetes manifests, developers define `resources.requests` and `resources.limits`. While syntactically adjacent, the Linux kernel translates them into entirely distinct control systems within `cgroups` (control groups):
@@ -106,3 +112,9 @@ When a worker node falls below its hard eviction threshold (e.g., `memory.availa
    - Size memory requests generously to account for startup spikes, class loading, and JIT compilation.
 3. **For High-Priority Workloads:**
    - Match `requests.memory == limits.memory` to ensure `Guaranteed` QoS status.
+
+---
+
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| *First Chapter* | [📚 Table of Contents](../README.md#table-of-contents) | [Chapter 2: Container vs. App Memory ➡️](02-container-vs-application-memory.md) |

@@ -4,6 +4,12 @@
 
 ---
 
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Chapter 1: Requests & Limits](01-requests-limits-kernel-mechanics.md) | [📚 Table of Contents](../README.md#table-of-contents) | [Chapter 3: Telemetry & Metrics Pitfalls ➡️](03-metrics-telemetry-pitfalls.md) |
+
+---
+
 ## 1. The Observation Paradox
 
 A common frustration among Kubernetes operators:
@@ -101,3 +107,9 @@ When the pod restarts during a rolling update, the initialization surge demands 
    - In Go: Set `GOMEMLIMIT` to approximately 85-90% of the container limit.
 2. **Monitor `container_memory_working_set_bytes` rather than application metrics alone.**
 3. **Profile application startup** to ensure recommendations incorporate initialization peak RSS.
+
+---
+
+| ⬅️ Previous | 🏠 Overview | Next ➡️ |
+| :--- | :---: | ---: |
+| [⬅️ Chapter 1: Requests & Limits](01-requests-limits-kernel-mechanics.md) | [📚 Table of Contents](../README.md#table-of-contents) | [Chapter 3: Telemetry & Metrics Pitfalls ➡️](03-metrics-telemetry-pitfalls.md) |
