@@ -1,0 +1,32 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-guaranteed-qos-mission-critical
+  annotations:
+    policies.kyverno.io/title: Enforce Guaranteed QoS for Mission-Critical Workloads
+    policies.kyverno.io/category: Reliability / QoS
+    policies.kyverno.io/severity: high
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: check-guaranteed-qos
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  priority: mission-critical
+      validate:
+        message: "Mission-critical pods must configure Guaranteed QoS (requests.cpu == limits.cpu and requests.memory == limits.memory)."
+        pattern:
+          spec:
+            containers:
+              - resources:
+                  requests:
+                    cpu: "$(./../limits/cpu)"
+                    memory: "$(./../limits/memory)"
+                  limits:
+                    cpu: "?*"
+                    memory: "?*"

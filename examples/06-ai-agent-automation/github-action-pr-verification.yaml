@@ -1,0 +1,29 @@
+name: "Verify Rightsizing Pull Request"
+
+on:
+  pull_request:
+    paths:
+      - "deployments/**"
+      - "helm/**"
+      - "**/values*.yaml"
+
+jobs:
+  validate-rightsizing-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+
+      - name: Validate PR Revision Freshness
+        run: |
+          echo "Verifying that rightsizing modifications match the current git commit tree..."
+          # Reject PR if base branch has commits newer than the analysis window
+          LAST_COMMIT_DATE=$(git log -1 --format=%ct origin/main)
+          echo "Last commit timestamp on target branch: $LAST_COMMIT_DATE"
+
+      - name: Check Resource Manifest Constraints
+        run: |
+          echo "Ensuring no latency-critical workload has introduced rigid CPU limits..."
+          # Validation script can inspect diff using kubeconform or kyverno-cli

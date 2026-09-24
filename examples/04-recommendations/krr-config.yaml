@@ -1,0 +1,23 @@
+# Robusta KRR (Kubernetes Resource Recommender) Configuration
+# https://github.com/robusta-dev/krr
+
+prometheus_url: "http://prometheus-k8s.monitoring.svc:9090"
+strategy: "conservative"
+
+# Lookback settings
+history_duration: 14  # 14 days lookback window
+timeframe_duration: 15 # 15 minute step intervals
+
+# Strategy Parameters
+conservative_strategy:
+  cpu_percentile: 99     # Evaluate P99 to capture micro-spikes
+  cpu_buffer: 0.15       # Add 15% safety buffer above P99
+  memory_buffer: 0.25    # Add 25% safety buffer above max working set
+  min_cpu: "50m"
+  min_memory: "128Mi"
+
+# Exclusions
+exempt_namespaces:
+  - "kube-system"
+  - "monitoring"
+  - "logging"

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-app-bad
+  labels:
+    app: spring-boot-app
+    config: anti-pattern
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-boot-app
+      config: anti-pattern
+  template:
+    metadata:
+      labels:
+        app: spring-boot-app
+        config: anti-pattern
+    spec:
+      containers:
+        - name: app
+          image: eclipse-temurin:21-jre-alpine
+          command: ["java"]
+          # ANTI-PATTERN: Heap size equals container limit!
+          # Zero headroom for Metaspace, thread stacks, or native buffers.
+          args: ["-Xmx1024m", "-Xms1024m", "-jar", "/app.jar"]
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "1024Mi"
+            limits:
+              cpu: "500m"
+              memory: "1024Mi"

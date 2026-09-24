@@ -1,0 +1,59 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: kubernetes-rightsizing-alerts
+  labels:
+    role: alert-rules
+spec:
+  groups:
+    - name: rightsizing.rules
+      rules:
+        # Alert 1: Container CPU Throttling High
+        - alert: K8sContainerCPUThrottlingHigh
+          expr: |
+            sum by (namespace, pod, container) (
+              rate(container_cpu_cfs_throttled_periods_total{container!=""}[5m])
+            )
+            /
+            sum by (namespace, pod, container) (
+              rate(container_cpu_cfs_periods_total{container!=""}[5m])
+            ) * 100 > 25
+          for: 10m
+          labels:
+            severity: warning
+            category: performance
+          annotations:
+            summary: "Container CPU Throttling is above 25% (pod {{ $labels.pod }})"
+            description: "Container {{ $labels.container }} in namespace {{ $labels.namespace }} is being throttled {{ $value | printf \"%.2f\" }}% of CFS periods. Remove CPU limits or increase allocation."
+
+        # Alert 2: Memory Approaching Limit (OOMKill Warning)
+        - alert: K8sContainerMemoryApproachingLimit
+          expr: |
+            sum by (namespace, pod, container) (
+              container_memory_working_set_bytes{container!=""}
+            )
+            /
+            sum by (namespace, pod, container) (
+              kube_pod_container_resource_limits{resource="memory"}
+            ) * 100 > 85
+          for: 5m
+          labels:
+            severity: warning
+            category: reliability
+          annotations:
+            summary: "Container memory working set > 85% of limit (pod {{ $labels.pod }})"
+            description: "Container {{ $labels.container }} in namespace {{ $labels.namespace }} has reached {{ $value | printf \"%.2f\" }}% of its memory limit. Imminent risk of OOMKill."
+
+        # Alert 3: Container OOMKilled Detected
+        - alert: K8sPodOOMKilled
+          expr: |
+            sum by (namespace, pod, container) (
+              increase(kube_pod_container_status_terminated_reason{reason="OOMKilled"}[10m])
+            ) > 0
+          for: 0m
+          labels:
+            severity: critical
+            category: reliability
+          annotations:
+            summary: "Container OOMKilled detected (pod {{ $labels.pod }})"
+            description: "Container {{ $labels.container }} in namespace {{ $labels.namespace }} was terminated by the Linux kernel OOM Killer (exit code 137)."

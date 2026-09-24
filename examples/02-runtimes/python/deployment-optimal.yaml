@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-service-optimal
+  labels:
+    app: fastapi-service
+    config: optimal
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fastapi-service
+      config: optimal
+  template:
+    metadata:
+      labels:
+        app: fastapi-service
+        config: optimal
+    spec:
+      containers:
+        - name: app
+          image: python:3.11-slim
+          # BEST PRACTICE: Explicitly set worker count = (2 * allocated cores) + 1
+          # For 2 cores allocated: 4 workers + periodic worker recycling
+          command:
+            - "gunicorn"
+            - "app:app"
+            - "--workers=4"
+            - "--worker-class=uvicorn.workers.UvicornWorker"
+            - "--bind=0.0.0.0:8000"
+            - "--max-requests=2000"
+            - "--max-requests-jitter=200"
+            - "--timeout=30"
+          resources:
+            requests:
+              cpu: "1000m"
+              memory: "768Mi"
+            limits:
+              cpu: "2000m"
+              memory: "1536Mi"

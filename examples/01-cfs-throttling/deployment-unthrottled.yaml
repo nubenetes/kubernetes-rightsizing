@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-service-unthrottled
+  labels:
+    app: api-service
+    tier: unthrottled-optimal
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api-service
+      tier: unthrottled-optimal
+  template:
+    metadata:
+      labels:
+        app: api-service
+        tier: unthrottled-optimal
+    spec:
+      containers:
+        - name: web-api
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              # BEST PRACTICE: Adequate CPU request to establish scheduler priority
+              cpu: "1000m"
+              memory: "512Mi"
+            limits:
+              # CPU limit omitted to allow burst execution without artificial CFS throttling
+              memory: "512Mi"

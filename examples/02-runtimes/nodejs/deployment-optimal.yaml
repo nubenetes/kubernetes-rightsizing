@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-api-optimal
+  labels:
+    app: nodejs-api
+    config: optimal
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejs-api
+      config: optimal
+  template:
+    metadata:
+      labels:
+        app: nodejs-api
+        config: optimal
+    spec:
+      containers:
+        - name: app
+          image: node:20-alpine
+          env:
+            # BEST PRACTICE: Explicitly constrain V8 Old Space to 75% of container memory
+            # Reserving 256Mi for Libuv threads, C++ Buffers, and network I/O
+            - name: NODE_OPTIONS
+              value: "--max-old-space-size=768"
+          command: ["node", "server.js"]
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              memory: "1024Mi"
+              # CPU limit omitted to guarantee sub-millisecond event loop latency

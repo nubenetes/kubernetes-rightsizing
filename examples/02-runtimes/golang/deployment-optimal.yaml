@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: golang-service-optimal
+  labels:
+    app: golang-service
+    config: optimal
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: golang-service
+      config: optimal
+  template:
+    metadata:
+      labels:
+        app: golang-service
+        config: optimal
+    spec:
+      containers:
+        - name: app
+          image: golang:1.22-alpine
+          env:
+            # BEST PRACTICE: Set GOMEMLIMIT to 90% of container memory limit
+            - name: GOMEMLIMIT
+              value: "900MiB"
+            # Optional: Tune GC trigger frequency (default: 100)
+            - name: GOGC
+              value: "100"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              # Container hard limit: 1000Mi
+              memory: "1000Mi"

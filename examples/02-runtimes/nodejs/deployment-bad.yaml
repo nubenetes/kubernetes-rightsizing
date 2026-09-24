@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-api-bad
+  labels:
+    app: nodejs-api
+    config: anti-pattern
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs-api
+      config: anti-pattern
+  template:
+    metadata:
+      labels:
+        app: nodejs-api
+        config: anti-pattern
+    spec:
+      containers:
+        - name: app
+          image: node:20-alpine
+          command: ["node", "server.js"]
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              # ANTI-PATTERN: Low CPU limit freezes the single-threaded Event Loop
+              # No V8 heap limit configured -> V8 defaults to node memory sizing
+              cpu: "250m"
+              memory: "512Mi"

@@ -1,0 +1,29 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-cpu-limits-latency-sensitive
+  annotations:
+    policies.kyverno.io/title: Disallow CPU Limits on Latency-Sensitive Tiers
+    policies.kyverno.io/category: Performance / CFS Throttling
+    policies.kyverno.io/severity: high
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: validate-no-cpu-limit
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  tier: latency-critical
+      validate:
+        message: "Workloads labeled 'tier: latency-critical' must NOT configure CPU limits to prevent Linux CFS quota throttling."
+        pattern:
+          spec:
+            containers:
+              - resources:
+                  limits:
+                    # CPU limit must not be set
+                    X(cpu): "null"
