@@ -25,19 +25,39 @@ Robusta KRR operates by executing parameterized PromQL queries directly against 
 
 ```mermaid
 graph LR
-    Prom[(Prometheus)] -->|Historical Samples| KRR[Robusta KRR Engine]
-    KRR -->|Lookback Window: 7d| Strategy{Recommendation Strategy}
-    Strategy -->|Simple Strategy| SimpleCalc[CPU: p95 + 5% buffer<br/>Memory: Max + 15% buffer]
-    Strategy -->|Conservative| ConCalc[CPU: p99 + 15% buffer<br/>Memory: Max + 25% buffer]
-    SimpleCalc --> Output[CLI / YAML / JSON Report]
+    subgraph Inputs ["Data Inputs"]
+        K8sAPI["Kubernetes API Server<br/>(Workload specs, current requests & limits)"]
+        Prom[("Prometheus<br/>(Historical CPU/Memory metrics)")]
+    end
+
+    subgraph KRR ["Robusta KRR Engine"]
+        Engine["Data Ingestion & Lookback Window<br/>(Default: 8d / configurable)"]
+        Strategy{"Recommendation<br/>Strategy"}
+        SimpleCalc["Simple Strategy (Default)<br/>• CPU: p95 + 5% buffer<br/>• Memory: Max + 15% buffer"]
+        ConCalc["Conservative Strategy<br/>• CPU: p99 + 15% buffer<br/>• Memory: Max + 25% buffer"]
+    end
+
+    subgraph Outputs ["Reports"]
+        Output["Output Formats<br/>(CLI / Table / YAML / JSON / Slack)"]
+    end
+
+    K8sAPI --> Engine
+    Prom --> Engine
+    Engine --> Strategy
+    Strategy -->|Default Strategy| SimpleCalc
+    Strategy -->|Conservative Strategy| ConCalc
+    SimpleCalc --> Output
     ConCalc --> Output
 ```
 
 ### The Formula:
+
 * **Recommended CPU Request:**
-  $$\text{CPU}_{\text{rec}} = \max\left(\text{quantile}(0.95, \text{container\_cpu\_usage}[7\text{d}]), \text{min\_cpu}\right) \times (1 + \text{buffer})$$
+  $$\text{CPU}_{\text{rec}} = \max\left(\text{quantile}(0.95, \text{CPU Usage}[7\text{d}]), \text{Min CPU}\right) \times (1 + \text{buffer})$$
+  *(Where $\text{CPU Usage}$ queries `container_cpu_usage` or `container_cpu_usage_seconds_total`)*
 * **Recommended Memory Request:**
-  $$\text{Mem}_{\text{rec}} = \max(\text{container\_memory\_working\_set}[7\text{d}]) \times (1 + \text{buffer})$$
+  $$\text{Mem}_{\text{rec}} = \max(\text{Working Set Memory}[7\text{d}]) \times (1 + \text{buffer})$$
+  *(Where $\text{Working Set Memory}$ queries `container_memory_working_set`)*
 
 ---
 
@@ -47,22 +67,43 @@ VPA splits its responsibilities across three decoupled controllers:
 
 ```mermaid
 graph TD
-    subgraph VPA Architecture
-        Recommender[VPA Recommender]
-        Updater[VPA Updater]
-        Admission[VPA Admission Controller]
+    subgraph K8sControlPlane ["Kubernetes Control Plane"]
+        APIServer["kube-apiserver"]
+        ETCD[("etcd<br/>• VPA CRDs (Status & Target)<br/>• VPA Checkpoints")]
+        APIServer <--> ETCD
     end
 
-    Metrics[(Metrics Server / Prometheus)] -->|Pod Resource History| Recommender
-    Workload[(Deployment / Pod)] -->|Resource Tracking| Recommender
-    Recommender -->|Generates CRD Status| VPA_CRD[(VPA Resource Status)]
+    subgraph VPAComponents ["VPA Architecture (3 Decoupled Components)"]
+        Recommender["1. VPA Recommender<br/>(Decaying Histograms)"]
+        Updater["2. VPA Updater<br/>(Eviction Engine)"]
+        Admission["3. VPA Admission Controller<br/>(Mutating Webhook)"]
+    end
 
-    VPA_CRD -->|Read Targets| Updater
-    Updater -->|Evicts Pods needing resize| Workload
+    subgraph Telemetry ["Telemetry Sources"]
+        Metrics[("Metrics Server / Prometheus")]
+    end
 
-    VPA_CRD -->|Mutates incoming Pod spec| Admission
-    API[Kubernetes API Server] -->|Admission Review Request| Admission
-    Admission -->|Patched Pod Spec| API
+    subgraph Workloads ["Cluster Workloads"]
+        Deployment["Deployment / ReplicaSet Controller"]
+        Pod["Target Pods"]
+        Deployment -->|Manages| Pod
+    end
+
+    %% Recommender Flow
+    Metrics -->|Real-time / Historical Usage| Recommender
+    APIServer -->|Workload specs & VPA objects| Recommender
+    Recommender -->|Writes recommendations & checkpoints| APIServer
+
+    %% Updater Flow
+    APIServer -->|Watches VPA targets & live pods| Updater
+    Updater -->|Eviction API call| APIServer
+    APIServer -.->|Evicts pod out of target range| Pod
+
+    %% Admission Webhook Flow
+    Deployment -->|Recreates replacement pod| APIServer
+    APIServer -->|AdmissionReview request| Admission
+    Admission -->|AdmissionResponse: Patched resource spec| APIServer
+    APIServer -.->|Schedules rightsized pod| Pod
 ```
 
 ### VPA's Decaying Histogram Model
