@@ -32,21 +32,21 @@ Watch the complete video breakdown on the [**Nubenetes YouTube Channel**](https:
 
 ### 🎬 Long-Form Architecture Breakdowns
 
-| Video Title | Runtime | Topic & Architectural Focus | Watch Link | Studio Edit Link |
-| :--- | :--- | :--- | :--- | :--- |
-| **Why Pods Fail** | 7:35 | Root cause analysis of `OOMKilled` (Exit 137), startup spikes, CFS throttling probe failures, and QoS eviction dynamics. | [Watch Video](https://www.youtube.com/watch?v=ir69ilWvuk8) | [Edit in Studio](https://studio.youtube.com/video/ir69ilWvuk8/edit) |
-| **K8s AI Rightsizing** | 8:50 | Architecture of AI agents for fleet rightsizing: statistical calculation vs. LLM context synthesis, stale revisions, and rollback signals. | [Watch Video](https://www.youtube.com/watch?v=KNBemmtQjl0) | [Edit in Studio](https://studio.youtube.com/video/KNBemmtQjl0/edit) |
-| **Optimize K8s Resources** | 9:12 | Complete guide to requests vs. limits, container vs. application memory, Prometheus scrape traps, VPA/KRR algorithms, and cloud cost compaction. | [Watch Video](https://www.youtube.com/watch?v=aUIh_S8u5Z0) | [Edit in Studio](https://studio.youtube.com/video/aUIh_S8u5Z0/edit) |
+| Video Title | Runtime | Topic & Architectural Focus | Watch Link |
+| :--- | :--- | :--- | :--- |
+| **Why Pods Fail** | 7:35 | Root cause analysis of `OOMKilled` (Exit 137), startup spikes, CFS throttling probe failures, and QoS eviction dynamics. | [Watch Video](https://www.youtube.com/watch?v=ir69ilWvuk8) |
+| **K8s AI Rightsizing** | 8:50 | Architecture of AI agents for fleet rightsizing: statistical calculation vs. LLM context synthesis, stale revisions, and rollback signals. | [Watch Video](https://www.youtube.com/watch?v=KNBemmtQjl0) |
+| **Optimize K8s Resources** | 9:12 | Complete guide to requests vs. limits, container vs. application memory, Prometheus scrape traps, VPA/KRR algorithms, and cloud cost compaction. | [Watch Video](https://www.youtube.com/watch?v=aUIh_S8u5Z0) |
 
 ### 📱 YouTube Shorts (Quick Concepts)
 
-| Short Title | Runtime | Key Concept | Watch Link | Studio Edit Link |
-| :--- | :--- | :--- | :--- | :--- |
-| **Why Kubernetes Rightsizing Breaks Production** | 1:16 | The rightsizing paradox: why applying average p95 recommendations triggers immediate cold start crashes and HPA chaos. | [Watch Short](https://www.youtube.com/shorts/JvLlDvCDaQs) | [Edit in Studio](https://studio.youtube.com/video/JvLlDvCDaQs/edit) |
-| **Why Java Containers Crash in Kubernetes** | 1:10 | Sizing beyond the heap (`-Xmx`): accounting for Metaspace, thread stacks, direct byte buffers, and native libraries. | [Watch Short](https://www.youtube.com/shorts/TALoXBzoP18) | [Edit in Studio](https://studio.youtube.com/video/TALoXBzoP18/edit) |
-| **Why AI Optimizers Crash Your Apps** | 1:11 | Why unconstrained AI automation without GitOps guardrails and revision validation fails in production. | [Watch Short](https://www.youtube.com/shorts/sOnNqP4fXA0) | [Edit in Studio](https://studio.youtube.com/video/sOnNqP4fXA0/edit) |
-| **Why You Shouldn't Set CPU Limits** | 1:23 | The Linux CFS Quota trap: how multi-threaded bursts exhaust 100ms quotas, causing massive P99 latency spikes on idle nodes. | [Watch Short](https://www.youtube.com/shorts/WrKVlL6tOS8) | [Edit in Studio](https://studio.youtube.com/video/WrKVlL6tOS8/edit) |
-| **Why Container Memory Isn't Application Memory** | 1:08 | RSS vs. active/inactive page cache, memory allocators (glibc vs. jemalloc), and why freed heap memory stays in cgroups. | [Watch Short](https://www.youtube.com/shorts/Uk3dVmDw1f0) | [Edit in Studio](https://studio.youtube.com/video/Uk3dVmDw1f0/edit) |
+| Short Title | Runtime | Key Concept | Watch Link |
+| :--- | :--- | :--- | :--- |
+| **Why Kubernetes Rightsizing Breaks Production** | 1:16 | The rightsizing paradox: why applying average p95 recommendations triggers immediate cold start crashes and HPA chaos. | [Watch Short](https://www.youtube.com/shorts/JvLlDvCDaQs) |
+| **Why Java Containers Crash in Kubernetes** | 1:10 | Sizing beyond the heap (`-Xmx`): accounting for Metaspace, thread stacks, direct byte buffers, and native libraries. | [Watch Short](https://www.youtube.com/shorts/TALoXBzoP18) |
+| **Why AI Optimizers Crash Your Apps** | 1:11 | Why unconstrained AI automation without GitOps guardrails and revision validation fails in production. | [Watch Short](https://www.youtube.com/shorts/sOnNqP4fXA0) |
+| **Why You Shouldn't Set CPU Limits** | 1:23 | The Linux CFS Quota trap: how multi-threaded bursts exhaust 100ms quotas, causing massive P99 latency spikes on idle nodes. | [Watch Short](https://www.youtube.com/shorts/WrKVlL6tOS8) |
+| **Why Container Memory Isn't Application Memory** | 1:08 | RSS vs. active/inactive page cache, memory allocators (glibc vs. jemalloc), and why freed heap memory stays in cgroups. | [Watch Short](https://www.youtube.com/shorts/Uk3dVmDw1f0) |
 
 ---
 
