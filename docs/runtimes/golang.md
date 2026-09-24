@@ -19,15 +19,15 @@ Prior to Go 1.19, the Go garbage collector operated purely on a relative ratio (
 
 ```mermaid
 graph TD
-    subgraph Host Node CGroup Boundary
-        subgraph Container Hard Memory Limit (e.g. 1000MiB)
-            subgraph GOMEMLIMIT Soft Target (e.g. 900MiB)
-                Heap[Go Managed Heap Objects]
-                Stacks[Active Goroutine Stacks]
-                Runtime[Go Runtime Metadata]
+    subgraph HostNode ["Host Node CGroup Boundary"]
+        subgraph ContainerLimit ["Container Hard Memory Limit (e.g. 1000MiB)"]
+            subgraph SoftTarget ["GOMEMLIMIT Soft Target (e.g. 900MiB)"]
+                Heap["Go Managed Heap Objects"]
+                Stacks["Active Goroutine Stacks"]
+                Runtime["Go Runtime Metadata"]
             end
-            SafetyBuffer[10% Buffer for Non-Go Allocations]
-            Cgo[CGO / Native Memory Pools]
+            SafetyBuffer["10% Buffer for Non-Go Allocations"]
+            Cgo["CGO / Native Memory Pools"]
         end
     end
 ```

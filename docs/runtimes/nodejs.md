@@ -16,13 +16,13 @@ Node.js executes on the Google V8 engine. By default, V8 configures its maximum 
 
 ```mermaid
 graph TD
-    subgraph Container CGroup Memory Limit e.g. 1024MiB
-        subgraph Node.js Total Process Memory
-            subgraph V8 Heap --max-old-space-size e.g. 700MiB
-                NewSpace[New Space - Young Gen]
-                OldSpace[Old Space - Long Lived]
-                CodeSpace[Code Space]
-                MapSpace[Map Space]
+    subgraph ContainerLimit ["Container CGroup Memory Limit (e.g. 1024MiB)"]
+        subgraph NodeProcess ["Node.js Total Process Memory"]
+            subgraph V8Heap ["V8 Heap (--max-old-space-size e.g. 700MiB)"]
+                NewSpace["New Space - Young Gen"]
+                OldSpace["Old Space - Long Lived"]
+                CodeSpace["Code Space"]
+                MapSpace["Map Space"]
             end
             Buffers["Node.js Buffers (Native C++ Slab Memory outside V8)"]
             NativeAddons["Native C++ Addons (OpenSSL, Libuv, sharp, bcrypt)"]

@@ -16,10 +16,10 @@ Setting container memory limits equal to the JVM maximum heap (`-Xmx`) is the si
 
 ```mermaid
 graph TD
-    subgraph Container Memory Limit e.g. 2048MiB
-        subgraph JVM Process Total Memory MaxRAM
+    subgraph ContainerLimit ["Container Memory Limit (e.g. 2048MiB)"]
+        subgraph JVMProcess ["JVM Process Total Memory (MaxRAM)"]
             Heap["JVM Heap (-Xmx / MaxRAMPercentage)<br/>Young & Old Generations<br/>(e.g., 70% = 1433MiB)"]
-            subgraph Non-Heap Off-Heap Allocations ~30%
+            subgraph OffHeap ["Non-Heap Off-Heap Allocations (~30%)"]
                 Metaspace["Metaspace<br/>(Classes & Methods)"]
                 Stacks["Thread Stacks<br/>(1MB per thread * 150 threads)"]
                 CodeCache["JIT Code Cache<br/>(Compiled native code)"]
