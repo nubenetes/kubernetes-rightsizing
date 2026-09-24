@@ -53,32 +53,40 @@ Watch the complete video breakdown on the [**Nubenetes YouTube Channel**](https:
 ## 🧠 Core Architecture & Decision Framework
 
 ```mermaid
-graph TD
-    A[Cluster Workload Review] --> B{Determine Resource Type}
+flowchart TD
+    %% Node Definitions with Multi-line Formatting for Readability
+    A["🔍 Cluster Workload Review<br/>(Metrics & Inventory)"]
+    B{"Determine<br/>Resource Dimension"}
     
-    B -->|CPU Tuning| C[Set Accurate CPU Requests]
-    C --> D{Latency Sensitive?}
-    D -- Yes --> E[OMIT CPU Limits<br/>Prevent Linux CFS Quota Throttling]
-    D -- No / Batch --> F[Set High Burst CPU Limits]
+    A --> B
+    
+    %% CPU Optimization Branch
+    B -->|"⚡ CPU Tuning"| C["Set Accurate CPU Requests<br/>(Empirical P95 Base Load)"]
+    C --> D{"Latency<br/>Sensitive?"}
+    D -->|"Yes (Web / APIs)"| E["Omit CPU Limits<br/>(Prevent Linux CFS<br/>Quota Throttling)"]
+    D -->|"No (Batch / Queues)"| F["Set High Burst Limit<br/>(Protect Host From<br/>Runaway Loops)"]
 
-    B -->|Memory Tuning| G[Analyze Runtime Memory Anatomy]
-    G --> H[Java: JVM Heap <= 75% Container Limit]
-    G --> I[Node.js: --max-old-space-size <= 75% Container Limit]
-    G --> J[Go: GOMEMLIMIT = 90% Container Limit + automaxprocs]
-    G --> K[Python: Sized Workers = 2x Cores + 1]
+    %% Memory Optimization Branch
+    B -->|"💾 Memory Tuning"| G["Analyze Language Runtime<br/>Memory Anatomy & Allocators"]
+    G --> H["☕ Java (JVM)<br/>• Heap &le; 75% Limit<br/>• Reserve 25% Off-Heap<br/>• -XX:MaxRAMPercentage=75"]
+    G --> I["🟢 Node.js (V8)<br/>• Old Space &le; 75% Limit<br/>• Reserve C++ Buffer Slabs<br/>• Protect Event Loop"]
+    G --> J["🔷 Go (Golang)<br/>• GOMEMLIMIT = 90% Limit<br/>• Set automaxprocs<br/>• Soft GC Target"]
+    G --> K["🐍 Python (WSGI/ASGI)<br/>• Workers = 2 &times; Cores + 1<br/>• Max Requests Recycling<br/>• Copy-On-Write Guard"]
 
-    E --> L[Prometheus Telemetry & Alerting]
+    %% Telemetry Convergence
+    E --> L["📊 Prometheus Telemetry<br/>&amp; Continuous Alerting"]
     F --> L
     H --> L
     I --> L
     J --> L
     K --> L
 
-    L --> M{Evaluate via VPA/KRR}
-    M --> N[Apply Selection Policy: Delta > $50 or > 35%]
-    N --> O[Verify Git Revision Freshness]
-    O --> P[Declarative GitOps Pull Request]
-    P --> Q[Canary Verification & Cloud Node Compaction]
+    %% Evaluation & GitOps
+    L --> M{"Evaluate via<br/>VPA / KRR Engine"}
+    M --> N["Apply Selection Policy<br/>• Delta &gt; $50/mo or &gt; 35%<br/>• Filter Noise & Churn"]
+    N --> O["Verify Git Revision<br/>Freshness (Stale-Check)"]
+    O --> P["Submit Declarative<br/>GitOps Pull Request"]
+    P --> Q["🚀 Canary Verification<br/>&amp; Cloud Node Compaction<br/>(Realize $ Savings)"]
 ```
 
 ---

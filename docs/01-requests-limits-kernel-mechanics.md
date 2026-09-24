@@ -78,12 +78,12 @@ Kubernetes derives QoS dynamically from the presence and equality of requests an
 
 ```mermaid
 graph TD
-    Start([Pod Spec]) --> ReqCheck{Requests Specified?}
-    ReqCheck -- No --> BestEffort[QoS: BestEffort<br/>• oom_score_adj = 1000<br/>• First to be evicted]
-    ReqCheck -- Yes --> LimCheck{Limits Specified?}
-    LimCheck -- No --> Burstable[QoS: Burstable<br/>• oom_score_adj = 2 to 999<br/>• Evicted second]
-    LimCheck -- Yes --> EqualCheck{Requests == Limits for all containers?}
-    EqualCheck -- Yes --> Guaranteed[QoS: Guaranteed<br/>• oom_score_adj = -997<br/>• Last to be evicted]
+    Start(["Pod Spec"]) --> ReqCheck{"Requests<br/>Specified?"}
+    ReqCheck -- No --> BestEffort["QoS: BestEffort<br/>• oom_score_adj = 1000<br/>• First to be evicted"]
+    ReqCheck -- Yes --> LimCheck{"Limits<br/>Specified?"}
+    LimCheck -- No --> Burstable["QoS: Burstable<br/>• oom_score_adj = 2 to 999<br/>• Evicted second"]
+    LimCheck -- Yes --> EqualCheck{"Requests == Limits<br/>for all containers?"}
+    EqualCheck -- Yes --> Guaranteed["QoS: Guaranteed<br/>• oom_score_adj = -997<br/>• Last to be evicted"]
     EqualCheck -- No --> Burstable
 ```
 
