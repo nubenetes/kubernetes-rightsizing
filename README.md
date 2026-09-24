@@ -22,7 +22,7 @@ This repository contains concrete manifests, runtime-specific tuning configurati
 This project is built directly upon the research, mathematical models, and architectural principles established in **The Technical Guide to Kubernetes Rightsizing** by [LearnKube](https://learnkube.com):
 
 * 🌐 **Official Web Guide & Updates:** [https://learnkube.com/kubernetes-rightsizing](https://learnkube.com/kubernetes-rightsizing)
-* 📄 **Comprehensive Book (314 Pages):** Available locally in this repository at [`references/kubernetes-resource-review.pdf`](references/kubernetes-resource-review.pdf).
+* 📖 **Official Book (314 Pages):** Available for download directly from the authors at [learnkube.com/kubernetes-rightsizing](https://learnkube.com/kubernetes-rightsizing).
 
 ---
 
@@ -103,8 +103,6 @@ flowchart TD
 kubernetes-rightsizing/
 ├── README.md                                    # Master documentation & video index
 ├── LICENSE                                       # Apache 2.0 License
-├── references/
-│   └── kubernetes-resource-review.pdf           # 314-page LearnKube technical guide
 ├── docs/
 │   ├── 01-requests-limits-kernel-mechanics.md   # Linux CFS, quota periods, shares, OOMKilled, Eviction, QoS
 │   ├── 02-container-vs-application-memory.md   # RSS, WorkingSet, PageCache, allocators, cold starts
